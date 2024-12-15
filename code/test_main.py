@@ -10,3 +10,12 @@ def test_divide_without_error():
 def test_divide_error():
     with pytest.raises(ZeroDivisionError):
         10 / 0
+
+def test_multi():
+    assert 5 * 5 == 25
+
+def test_parsing(item ='a', text ='Karina'):
+    if item in text:
+        return (True)
+    else:
+        return (False)

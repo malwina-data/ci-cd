@@ -6,3 +6,13 @@ def divide(a, b):
         raise ZeroDivisionError
     return a / b
 
+def divide(a, b):
+    return a * b
+
+def parsing(item, text):
+    if item in text:
+        return (True)
+    else:
+        return (False)
+
+
