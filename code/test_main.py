@@ -1,13 +1,8 @@
 import pytest
 import os
-
-# Zakładając, że funkcja find_context_before_pattern jest zaimportowana z Twojego skryptu
 from main import find_context_before_pattern
 
-
-# Funkcja do testowania
 def test_write_test_log():
-    # Przygotuj testowy plik logu
     test_log = """email for user9@example.org, attachment 'update_report.pdf' ready.
                   Email sent to user9@example.org with subject 'Latest Updates'.
                   Got index name (user9_update.eml).
@@ -21,7 +16,6 @@ def test_in_find():
     assert result == "user9_update"
     
 def test_file_not_found():
-    # Testowanie przypadku, gdy plik nie istnieje
     log_file_path = "non_existent_log.txt"
 
     with pytest.raises(FileNotFoundError):
