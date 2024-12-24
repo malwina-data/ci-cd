@@ -1,8 +1,3 @@
-
-Here's the **README** in English for your script:
-
----
-
 # Log Pattern Search Script
 
 This script is designed to search a log file for a specific error pattern and extract the `.eml` file name found in the context preceding the error. It uses regular expressions to locate the error pattern and retrieve the relevant email name.
@@ -22,7 +17,7 @@ pip install pytest
 
 - **main.py**: The main script that performs the search and error extraction.
 - **test_main.py**: The test script using `pytest` to verify the functionality of `main.py`.
-- **test_log.txt**: A sample log file used for testing (will be created during testing).
+- **test_log.txt**: A sample log file used for testing (will be created and delete during testing).
 
 ## Functionality
 
@@ -78,22 +73,3 @@ Email sent to user9@example.org with subject 'Latest Updates'.
 Got index name (user9_update.eml).
 java.lang.NoSuchMethodError: 'boolean org.bouncycastle.asn1.ASN1TaggedObjectParser.hasTag(int, int)'
 ```
-
-This log is used in the tests to check if the script can correctly find the `.eml` file (`user9_update.eml`) by searching for the `ERROR_PATTERN` in the log.
-
-## Error Handling
-
-- **FileNotFoundError**: Raised if the specified log file doesn't exist.
-- **RuntimeError**: Raised if any unexpected errors occur during execution.
-
-## Running the Script
-
-To run the script manually:
-
-1. Ensure you have a valid log file with the correct structure.
-2. Call the `find_context_before_pattern` function from `main.py` with the log file path as an argument.
-3. The script will print the `.eml` file name if found or a message stating no file was found.
-
----
-
-This README explains the script's functionality, testing instructions, and how to use it. Let me know if you'd like to add or modify anything!
