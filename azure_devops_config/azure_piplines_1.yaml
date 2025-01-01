@@ -13,6 +13,10 @@ pool:
 
 strategy:
   matrix:
+    Python39:
+      python.version: '3.9'
+    Python310:
+      python.version: '3.10'
     Python311:
       python.version: '3.11'
 
