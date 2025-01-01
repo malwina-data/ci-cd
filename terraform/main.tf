@@ -58,7 +58,7 @@ resource "aws_security_group" "main" {
   }
 }
 resource "aws_instance" "main" {
-  ami           = "ami-03c4a8310002221c7"  # Podaj odpowiednie AMI dla swojego regionu
+  ami           = "ami-015f3596bb2ef1aaa"  # ubuntu distribution
   instance_type = "t3.micro"
   subnet_id     = aws_subnet.main.id
   associate_public_ip_address = true
@@ -68,15 +68,16 @@ resource "aws_instance" "main" {
     Name = "Instance"
   }
 }
+
 resource "null_resource" "provision" {
   provisioner "file" {
     source      = "/Users/malwinka/Downloads/vsts-agent-linux-x64-3.248.0.tar.gz" 
-    destination =  "/home/ec2-user/vsts-agent-linux-x64-3.248.0.tar.gz"
+    destination =  "/home/ubuntu/vsts-agent-linux-x64-3.248.0.tar.gz"
 
 
     connection {
       type = "ssh"
-      user = "ec2-user"
+      user = "ubuntu"
       private_key = file("~/.ssh/key-pair.pem")
       host        = aws_instance.main.public_ip
   }
@@ -84,11 +85,12 @@ resource "null_resource" "provision" {
 
   provisioner "remote-exec" {
     inline = [
-    "echo 'Checking SSH connection' && sleep 10"
+    "echo 'Checking SSH connection' && sleep 10",
+    "tar -xvzf /home/ubuntu/vsts-agent-linux-x64-3.248.0.tar.gz -C /home/ubuntu/" 
     ]
     connection {
       type = "ssh"
-      user = "ec2-user"
+      user = "ubuntu"
       private_key = file("~/.ssh/key-pair.pem")
       host        = aws_instance.main.public_ip
   }
