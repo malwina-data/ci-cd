@@ -67,34 +67,6 @@ resource "aws_instance" "main" {
   tags = {
     Name = "Instance"
   }
-}
-
-resource "null_resource" "provision" {
-  provisioner "file" {
-    source      = "/Users/malwinka/Downloads/vsts-agent-linux-x64-3.248.0.tar.gz" 
-    destination =  "/home/ubuntu/vsts-agent-linux-x64-3.248.0.tar.gz"
-
-
-    connection {
-      type = "ssh"
-      user = "ubuntu"
-      private_key = file("~/.ssh/key-pair.pem")
-      host        = aws_instance.main.public_ip
-  }
-  }
-
-  provisioner "remote-exec" {
-    inline = [
-    "echo 'Checking SSH connection' && sleep 10",
-    "tar -xvzf /home/ubuntu/vsts-agent-linux-x64-3.248.0.tar.gz -C /home/ubuntu/" 
-    ]
-    connection {
-      type = "ssh"
-      user = "ubuntu"
-      private_key = file("~/.ssh/key-pair.pem")
-      host        = aws_instance.main.public_ip
-  }
-  } 
 
 }
 output "subnet_id" {
