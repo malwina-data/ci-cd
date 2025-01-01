@@ -67,8 +67,8 @@ resource "aws_instance" "main" {
   tags = {
     Name = "Instance"
   }
-
 }
+
 output "subnet_id" {
   value = aws_subnet.main.id
 }
