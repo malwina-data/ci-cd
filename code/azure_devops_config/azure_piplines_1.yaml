@@ -35,9 +35,13 @@ steps:
     
   - script: |
       sudo apt update
-      sudo apt install -y python3-pip build-essential python3-dev
-      pip3 install pytest
-    displayName: Install dependencies and pytest
-  - script: |
-      pytest --version
+      sudo apt install -y python3-venv python3-pip
+      python3 -m venv myenv
+      source myenv/bin/activate
+
+      pip install -r requirements.txt
+      pip install pytest  # Możesz pominąć, jeśli pytest jest w 'requirements.txt'
+
+      # Uruchamianie testów
+      pytest --maxfail=1 --disable-warnings -q
     displayName: Check pytest version
