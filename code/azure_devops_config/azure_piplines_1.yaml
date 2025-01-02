@@ -13,9 +13,26 @@ pool:
 
 steps:
   - script: |
-      python --version
-      python3 --version
-      python -m pip install --upgrade pip
-      pip install pytest pytest-azurepipelines
-      pytest
+      echo "Updating package list"
+      sudo apt update
+    displayName: Update apt
+    continueOnError: false
+
+  - script: |
+      echo "Installing Python 3.10"
+      sudo apt install -y python3.10 python3.10-venv python3.10-dev
+    displayName: Install Python 3.10
+    continueOnError: false
+
+  - script: |
+      echo "Checking Python version"
+      python3.10 --version
     displayName: Check Python Version
+
+  - script: |
+      echo "Saving log to file"
+      echo "Python 3.10 installation logs:" > installation_log.txt
+      sudo apt update >> installation_log.txt 2>&1
+      sudo apt install -y python3.10 python3.10-venv python3.10-dev >> installation_log.txt 2>&1
+      cat installation_log.txt
+    displayName: Save Log to File
