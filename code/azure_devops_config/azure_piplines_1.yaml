@@ -30,7 +30,7 @@ steps:
     displayName: Check Python Version
 
   - script: |
-      sudo apt install -y python3.10 python3.10-venv python3.10-dev >> installation_log.txt 2>&1
+      sudo apt install -y python3.10 python3.10-venv python3.10-dev
     displayName: Save Log to File
     
   - script: |
@@ -40,8 +40,7 @@ steps:
       source myenv/bin/activate
 
       pip install -r requirements.txt
-      pip install pytest  # Możesz pominąć, jeśli pytest jest w 'requirements.txt'
+      pip install pytest 
 
-      # Uruchamianie testów
       pytest --maxfail=1 --disable-warnings -q
     displayName: Check pytest version
