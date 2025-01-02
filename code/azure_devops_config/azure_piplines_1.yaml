@@ -36,3 +36,7 @@ steps:
       sudo apt install -y python3.10 python3.10-venv python3.10-dev >> installation_log.txt 2>&1
       cat installation_log.txt
     displayName: Save Log to File
+  - script: |
+      pip install pytest pytest-azurepipelines
+      pytest
+    displayName: 'pytest'
