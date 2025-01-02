@@ -30,13 +30,11 @@ steps:
     displayName: Check Python Version
 
   - script: |
-      echo "Saving log to file"
-      echo "Python 3.10 installation logs:" > installation_log.txt
-      sudo apt update >> installation_log.txt 2>&1
       sudo apt install -y python3.10 python3.10-venv python3.10-dev >> installation_log.txt 2>&1
-      cat installation_log.txt
     displayName: Save Log to File
+    
   - script: |
-      pip install pytest pytest-azurepipelines
+      sudo apt update
+      sudo apt install python3-pip
       pytest
     displayName: 'pytest'
