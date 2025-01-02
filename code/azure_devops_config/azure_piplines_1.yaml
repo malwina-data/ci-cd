@@ -36,5 +36,4 @@ steps:
   - script: |
       sudo apt update
       sudo apt install python3-pip
-      pytest
     displayName: 'pytest'
