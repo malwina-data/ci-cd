@@ -35,5 +35,9 @@ steps:
     
   - script: |
       sudo apt update
-      sudo apt install python3-pip
-    displayName: 'pytest'
+      sudo apt install -y python3-pip build-essential python3-dev
+      pip3 install pytest
+    displayName: Install dependencies and pytest
+  - script: |
+      pytest --version
+    displayName: Check pytest version
