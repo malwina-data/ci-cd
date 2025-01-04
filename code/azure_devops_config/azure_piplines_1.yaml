@@ -41,11 +41,10 @@ steps:
 
       pip install -r requirements.txt
       pip install pytest 
-
-      pytest --maxfail=1 --disable-warnings -q
+      
+      pytest --junitxml=results.xml
     displayName: Check pytest version
-  - script: pytest --junitxml=results.xml
-    displayName: 'Run Pytest with JUnit output'
+
   - task: PublishTestResults@2
     inputs:
       testResultsFiles: '**/results.xml'

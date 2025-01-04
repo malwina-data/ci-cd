@@ -8,3 +8,10 @@ terraform.exe
 .terraform.lock.hcl
 terraform.tfstate
 terraform.tfstate.backup
+
+# Ignoruj katalogi __pycache__
+__pycache__/
+
+# Ignoruj pliki kompilowane .pyc
+*.pyc
+

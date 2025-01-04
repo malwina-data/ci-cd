@@ -28,8 +28,10 @@ steps:
     pip install pytest pytest-azurepipelines
     pytest
   displayName: 'pytest'
+
 - script: pytest --junitxml=results.xml
   displayName: 'Run Pytest with JUnit output'
+  
 - task: PublishTestResults@2
   inputs:
     testResultsFiles: '**/results.xml'
