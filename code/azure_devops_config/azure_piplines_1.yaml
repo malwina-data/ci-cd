@@ -52,6 +52,11 @@ steps:
       testResultsFiles: '**/results.xml'
       testResultsFormat: 'JUnit'
   
+  - script: |
+      echo "Listing files"
+      ls $(System.DefaultWorkingDirectory)
+    displayName: 'List files in working directory'
+
   - task: CopyFilesOverSSH@0
     inputs:
       sshEndpoint: 'AWS-EC2-Production'
