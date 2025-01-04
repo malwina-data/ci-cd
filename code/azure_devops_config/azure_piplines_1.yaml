@@ -67,9 +67,13 @@ steps:
 
   - task: SSH@0
     inputs:
-      sshEndpoint: 'AWS-EC2-Production'  # Połączenie SSH z serwerem
-      scriptPath: './backup.sh'
+      sshEndpoint: 'AWS-EC2-Production'  # Endpoint SSH
+      script: |
+        echo "Rozpoczynam backup aplikacji..."
+        cp -r /home/ubuntu/app /home/ubuntu/app_backup_$(date +%Y%m%d%H%M%S)
+        echo "Backup zakończony"
     displayName: 'Wykonanie backupu aplikacji'
+
 
   - task: SSH@0
     inputs:
