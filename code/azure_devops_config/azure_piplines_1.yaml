@@ -51,3 +51,10 @@ steps:
     inputs:
       testResultsFiles: '**/results.xml'
       testResultsFormat: 'JUnit'
+  
+  - task: CopyFilesOverSSH@0
+    inputs:
+      sshEndpoint: 'AWS-EC2-Production'
+      sourceFolder: '$(System.DefaultWorkingDirectory)/code'
+      contents: '**/*'
+      targetFolder: '/home/ubuntu/app'
