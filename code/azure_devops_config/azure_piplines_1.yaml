@@ -42,6 +42,7 @@ steps:
       source myenv/bin/activate
 
       pip install -r requirements.txt
+      pip install flask
       pip install pytest 
       
       pytest --junitxml=results.xml
@@ -76,4 +77,3 @@ steps:
       scriptPath: './python main.py'
     displayName: 'start aplikacji'
 
-    
