@@ -44,3 +44,9 @@ steps:
 
       pytest --maxfail=1 --disable-warnings -q
     displayName: Check pytest version
+  - script: pytest --junitxml=results.xml
+    displayName: 'Run Pytest with JUnit output'
+  - task: PublishTestResults@2
+    inputs:
+      testResultsFiles: '**/results.xml'
+      testResultsFormat: 'JUnit'
