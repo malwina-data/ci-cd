@@ -52,9 +52,28 @@ steps:
       testResultsFiles: '**/results.xml'
       testResultsFormat: 'JUnit'
   
+  - script: |
+      echo "Listing files"
+      ls $(System.DefaultWorkingDirectory)
+    displayName: 'List files in working directory'
+
   - task: CopyFilesOverSSH@0
     inputs:
       sshEndpoint: 'AWS-EC2-Production'
       sourceFolder: '$(System.DefaultWorkingDirectory)/code'
       contents: '**/*'
       targetFolder: '/home/ubuntu/app'
+
+  - task: SSH@0
+    inputs:
+      sshEndpoint: 'AWS-EC2-Production'  # Połączenie SSH z serwerem
+      scriptPath: './backup.sh'
+    displayName: 'Wykonanie backupu aplikacji'
+
+  - task: SSH@0
+    inputs:
+      sshEndpoint: 'AWS-EC2-Production'  # Połączenie SSH z serwerem
+      scriptPath: './python main.py'
+    displayName: 'start aplikacji'
+
+    
