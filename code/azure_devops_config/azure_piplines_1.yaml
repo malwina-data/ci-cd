@@ -43,8 +43,7 @@ steps:
 
       pip install -r requirements.txt
       pip install flask
-      pip install pytest 
-      
+      pip install pytest
       pytest --junitxml=results.xml
     displayName: Check pytest version
 
@@ -68,6 +67,8 @@ steps:
   - task: SSH@0
     inputs:
       sshEndpoint: 'AWS-EC2-Production'  # Połączenie SSH z serwerem
-      scriptPath: './python main.py'
-    displayName: 'start aplikacji'
+      scriptPath: './deploy.sh'  # Ścieżka do skryptu .sh na lokalnej maszynie
+    displayName: 'Uruchomienie aplikacji Python za pomocą skryptu .sh'
+
+
 
