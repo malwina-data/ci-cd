@@ -1,6 +1,6 @@
 import pytest
 import os
-from main import find_context_before_pattern
+from code.main import find_context_before_pattern
 
 def test_write_test_log():
     test_log = """email for user9@example.org, attachment 'update_report.pdf' ready.
