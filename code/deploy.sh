@@ -1,3 +1,3 @@
 source /home/ubuntu/app/myenv/bin/activate
-
-nohup gunicorn -w 1 -b 0.0.0.0:5000 main:app > gunicorn.log 2>&1 &
+pip install flask
+nohup python3 main.py > main.log 2>&1 &
