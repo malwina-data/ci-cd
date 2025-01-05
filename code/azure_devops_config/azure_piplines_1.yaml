@@ -67,8 +67,12 @@ steps:
   - task: SSH@0
     inputs:
       sshEndpoint: 'AWS-EC2-Production'  # Połączenie SSH z serwerem
-      scriptPath: './deploy.sh'  # Ścieżka do skryptu .sh na lokalnej maszynie
-    displayName: 'Uruchomienie aplikacji Python za pomocą skryptu .sh'
+      runOptions: 'commands'  # Używamy opcji commands
+      commands: |
+        chmod +x /home/ubuntu/app/deploy.sh  # Nadajemy uprawnienia do wykonania skryptu
+        /home/ubuntu/app/deploy.sh  # Uruchamiamy skrypt
+    displayName: 'Uruchomienie aplikacji na serwerze'
+
 
 
 
