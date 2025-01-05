@@ -1,10 +1,9 @@
-
 import re
 import logging
+from flask import Flask, jsonify, request
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-
 
 ERROR_PATTERN = r"boolean org\.bouncycastle\.asn1\.ASN1TaggedObjectParser\.hasTag\(int, int\)"
 EML_PATTERN = r"Got index name \((.*?)\.eml\)"
@@ -12,20 +11,23 @@ pattern = ERROR_PATTERN
 LOG_FILE_PATH = r"log.txt"
 context_length: int = 200
 
+
+app = Flask(__name__)
+
 def find_context_before_pattern(
         full_path: str, pattern: str = ERROR_PATTERN, context_length: int = 200
 ) -> [str]:
     """
-    Searches for a specific error pattern in the log file and extracts the name
-    of the `.eml` file found in the context preceding the error.
+    Szuka określonego wzorca błędu w pliku logu i wyodrębnia nazwę pliku `.eml`,
+    który znajduje się w kontekście przed błędem.
 
     Args:
-        full_path (str): Path to the log file.
-        pattern (str): Regex pattern to search for the error.
-        context_length (int): Number of characters to extract before the matched pattern.
+        full_path (str): Ścieżka do pliku logu.
+        pattern (str): Wzorzec regex do wyszukiwania błędu.
+        context_length (int): Liczba znaków do wyodrębnienia przed dopasowanym wzorcem.
 
     Returns:
-        Optional[str]: Name of the `.eml` file, or None if the pattern or `.eml` file is not found.
+        Optional[str]: Nazwa pliku `.eml`, lub None, jeśli wzorzec lub plik `.eml` nie zostały znalezione.
     """
     try:
         with open(full_path, "r", encoding="utf-8") as file:
@@ -46,17 +48,17 @@ def find_context_before_pattern(
     except Exception as e:
         raise RuntimeError(f"An unexpected error occurred: {str(e)}")
 
-
-if __name__ == "__main__":
-    """
-    Main script: runs the `find_context_before_pattern` function and outputs the result.
-    """
+@app.route('/find_email', methods=['GET'])
+def find_email():
     try:
         failed_email = find_context_before_pattern(LOG_FILE_PATH)
-
         if failed_email:
-            print(f" {failed_email}.eml")
+            return jsonify({"email": f"{failed_email}.eml"})
         else:
-           print("No error pattern or `.eml` file name found in the logs.")
+            return jsonify({"error": "No error pattern or `.eml` file name found in the logs."}), 404
     except Exception as error:
-        print(f"Error: {error}")
+        return jsonify({"error": str(error)}), 500
+
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=5000, debug=True)
