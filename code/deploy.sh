@@ -9,8 +9,11 @@ python3 -m venv /home/ubuntu/app/venv
 
 # 3. Aktywuj środowisko wirtualne
 source /home/ubuntu/app/venv/bin/activate
+pip install gunicorn
+
 
 # 5. Uruchom aplikację w tle przy użyciu nohup (bez logów)
-python3 /home/ubuntu/app/main.py &
+nohup gunicorn -w 4 -b 0.0.0.0:5000 main:app &
+
 
 
