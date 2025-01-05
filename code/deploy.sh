@@ -11,6 +11,6 @@ python3 -m venv /home/ubuntu/app/venv
 source /home/ubuntu/app/venv/bin/activate
 
 # 5. Uruchom aplikację w tle przy użyciu nohup (bez logów)
-nohup python3 /home/ubuntu/app/main.py &
+python3 /home/ubuntu/app/main.py &
 
 
