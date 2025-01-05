@@ -63,9 +63,12 @@ steps:
       sshEndpoint: 'AWS-EC2-Production'
       runOptions: 'commands'
       commands: |
-        PRIVATE_IP=$(ip addr show eth0 | grep inet | awk '{print $2}' | cut -d/ -f1)
+        PRIVATE_IP=$(hostname -I | awk '{print $1}')
         echo "Prywatny adres IP maszyny: $PRIVATE_IP"
-        
+        echo "##vso[task.setvariable variable=private_ip]$PRIVATE_IP"
+    displayName: 'IP CHECK'
+
+
   - task: SSH@0
     inputs:
       sshEndpoint: 'AWS-EC2-Production'
