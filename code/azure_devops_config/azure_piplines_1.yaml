@@ -58,11 +58,11 @@ steps:
 
   - task: SSH@0
     inputs:
-      sshEndpoint: 'AWS-EC2-Production'  # Połączenie SSH z serwerem
-      runOptions: 'commands'  # Używamy opcji commands
+      sshEndpoint: 'AWS-EC2-Production'
+      runOptions: 'commands'
       commands: |
-        chmod +x /home/ubuntu/app/deploy.sh  # Nadajemy uprawnienia do wykonania skryptu
-        /home/ubuntu/app/deploy.sh  # Uruchamiamy skrypt
+        chmod +x /home/ubuntu/app/deploy.sh 
+        /home/ubuntu/app/deploy.sh
     displayName: 'Uruchomienie aplikacji na serwerze'
 
 

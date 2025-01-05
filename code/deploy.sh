@@ -9,11 +9,9 @@ python3 -m venv /home/ubuntu/app/venv
 
 # 3. Aktywuj środowisko wirtualne
 source /home/ubuntu/app/venv/bin/activate
+
+# 4. Zainstaluj gunicorn
+pip install flask
 pip install gunicorn
 
-
-# 5. Uruchom aplikację w tle przy użyciu nohup (bez logów)
-nohup gunicorn -w 4 -b 0.0.0.0:5000 main:app &
-
-
-
+nohup gunicorn -w 1 -b 0.0.0.0:5000 main:app > gunicorn.log 2>&1 &
