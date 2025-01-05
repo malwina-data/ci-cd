@@ -63,6 +63,14 @@ steps:
       sshEndpoint: 'AWS-EC2-Production'
       runOptions: 'commands'
       commands: |
+        PRIVATE_IP=$(ip addr show eth0 | grep inet | awk '{print $2}' | cut -d/ -f1)
+        echo "Prywatny adres IP maszyny: $PRIVATE_IP"
+        
+  - task: SSH@0
+    inputs:
+      sshEndpoint: 'AWS-EC2-Production'
+      runOptions: 'commands'
+      commands: |
         chmod +x /home/ubuntu/app/deploy.sh 
         /home/ubuntu/app/deploy.sh
     displayName: 'Uruchomienie aplikacji na serwerze'
