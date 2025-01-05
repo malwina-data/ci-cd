@@ -63,20 +63,15 @@ steps:
       sshEndpoint: 'AWS-EC2-Production'
       runOptions: 'commands'
       commands: |
-        PRIVATE_IP=$(hostname -I | awk '{print $1}')
-        echo "Prywatny adres IP maszyny: $PRIVATE_IP"
-        echo "##vso[task.setvariable variable=private_ip]$PRIVATE_IP"
-    displayName: 'IP CHECK'
-
-
-  - task: SSH@0
-    inputs:
-      sshEndpoint: 'AWS-EC2-Production'
-      runOptions: 'commands'
-      commands: |
         chmod +x /home/ubuntu/app/deploy.sh 
         /home/ubuntu/app/deploy.sh
     displayName: 'Uruchomienie aplikacji na serwerze'
+
+  - script: |
+      echo "Sprawdzanie dostępności aplikacji..."
+      PUBLIC_IP=$(curl -s ifconfig.me)
+      curl -f http://$PUBLIC_IP:5000 || exit 1
+    displayName: 'Test dostępności aplikacji'
 
 
 
