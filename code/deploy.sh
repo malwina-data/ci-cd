@@ -11,7 +11,9 @@ python3 -m venv /home/ubuntu/app/venv
 source /home/ubuntu/app/venv/bin/activate
 
 # 4. Zainstaluj zależności w środowisku wirtualnym
-pip install flask
+pip install -r /home/ubuntu/app/requirements.txt
 
-# 5. Uruchom aplikację
-python3 /home/ubuntu/app/main.py
+# 5. Uruchom aplikację w tle przy użyciu nohup (bez logów)
+nohup python3 /home/ubuntu/app/main.py &
+
+
