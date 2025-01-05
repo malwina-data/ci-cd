@@ -53,6 +53,12 @@ resource "aws_security_group" "main" {
     to_port = 22
     protocol = "tcp"
   }
+    ingress {
+    cidr_blocks = ["0.0.0.0/0"]
+    from_port   = 5000
+    to_port     = 5000
+    protocol    = "tcp"
+  }
   tags = {
     Name = "security_group"
   }
