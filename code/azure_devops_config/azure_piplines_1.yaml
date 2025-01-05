@@ -30,12 +30,9 @@ steps:
   - script: |
       sudo apt update
       sudo apt install -y python3-venv python3-pip
-      python3 -m venv myenv
-      source myenv/bin/activate
+    displayName: Pip install
 
-      pip install -r requirements.txt
-      pip install flask
-      pip install pytest
+  - script: |
       pytest --junitxml=results.xml
     displayName: Check pytest version
 
