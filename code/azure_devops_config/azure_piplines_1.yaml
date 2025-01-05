@@ -36,6 +36,7 @@ steps:
     displayName: Pip install
 
   - script: |
+      source /home/ubuntu/app/myenv/bin/activate
       pytest --junitxml=results.xml
     displayName: Check pytest version
 
