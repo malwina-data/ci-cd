@@ -60,11 +60,17 @@ steps:
     displayName: 'Copy files from GIT to the VM'
 
   - script: |
-      BACKUP_DIR="/home/ubuntu/app/backup_$(date +%Y%m%d)"
-      mkdir -p "$BACKUP_DIR"
-
-      cp -r /home/ubuntu/app/* "$BACKUP_DIR/"
+      BACKUP_DIR="/home/ubuntu/backup_$(date +%Y%m%d)"
+      
+      if [ ! -d "$BACKUP_DIR" ]; then
+          echo "Tworzenie kopii zapasowej w katalogu: $BACKUP_DIR"
+          mkdir -p "$BACKUP_DIR"
+          cp -r /home/ubuntu/app/* "$BACKUP_DIR/"
+      else
+          echo "$BACKUP_DIR już istnieje, pomijam tworzenie."
+      fi
     displayName: 'Create backup of current application'
+
 
 
   - task: SSH@0
@@ -82,11 +88,5 @@ steps:
       curl -f http://$PUBLIC_IP:5000/find_email || exit 1
     displayName: 'Accesing the web app'
 
-  - script: |
-      echo "Przywracanie aplikacji z kopii zapasowej..."
-      BACKUP_DIR=$(ls -d /home/ubuntu/app/backup_* | sort -r | head -n 1)
-      cp -r $BACKUP_DIR/* /home/ubuntu/app/
-    displayName: 'Restore backup if deployment fails'
-    condition: failed()
 
 
