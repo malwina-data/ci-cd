@@ -11,19 +11,20 @@
 
 
 ## Structure in order :
+
 ci-cd-2/
-├── terraform/
-│   └── main.tf
-├── pipelines/
-│   ├── azure_pipelines_run_on_VM_Agent.yaml
-│   └── azure_pipelines_on_Azure_Agent.yaml
-├── code/
-│   ├── deploy.sh
-│   ├── log.txt
-│   ├── main.py
-│   └── test_main.py
-├── .gitignore
-└── README.md
+├── terraform/                                                                               
+│   └── main.tf                                                                              
+├── pipelines/                                                                              
+│   ├── azure_pipelines_run_on_VM_Agent.yaml                                                 
+│   └── azure_pipelines_on_Azure_Agent.yaml                                                  
+├── code/                                                                                    
+│   ├── deploy.sh                                                                            
+│   ├── log.txt                                                                              
+│   ├── main.py                                                                              
+│   └── test_main.py                                                                         
+├── .gitignore                                                                               
+└── README.md                                                                                
 
                 
 
