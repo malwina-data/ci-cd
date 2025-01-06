@@ -18,6 +18,7 @@ steps:
 
 - script: |
     pip install pytest pytest-azurepipelines
+    pytest
   displayName: 'pytest'
 
 - script: pytest --junitxml=results.xml
