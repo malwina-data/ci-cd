@@ -12,7 +12,7 @@
 
 ## Structure in order :
 
-ci-cd-2/
+ci-cd/                                                                                       
 ├── terraform/                                                                               
 │   └── main.tf                                                                              
 ├── pipelines/                                                                              
