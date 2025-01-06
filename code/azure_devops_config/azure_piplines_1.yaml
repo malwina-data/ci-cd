@@ -88,5 +88,17 @@ steps:
       curl -f http://$PUBLIC_IP:5000/find_email || exit 1
     displayName: 'Accesing the web app'
 
+  - script: |
+      BACKUP_DIR=$(ls -d /home/ubuntu/backup_* 2>/dev/null | sort -r | head -n 1)
+      
+      if [ -z "$BACKUP_DIR" ]; then
+          exit 1
+      else
+          cp -r "$BACKUP_DIR"/* /home/ubuntu/app/
+      fi
+    displayName: 'Restore backup if deployment fails'
+    condition: failed()
+
+
 
 
