@@ -11,7 +11,7 @@
 
 
 ## Structure in order :
-
+```bash
 ci-cd/                                                                                       
 ├── terraform/                                                                               
 │   └── main.tf                                                                              
@@ -25,9 +25,8 @@ ci-cd/
 │   └── test_main.py                                                                         
 ├── .gitignore                                                                               
 └── README.md                                                                                
-
-                
-
+```
+   
 ### 1. Configure AWS Credentials
 
 Before starting, ensure you have valid AWS credentials configured. Use the following command to set up your credentials:
