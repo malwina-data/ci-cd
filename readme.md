@@ -14,15 +14,13 @@
 
 ci-cd-2/
 ├── terraform/                  
-│   ├── main.tf                                 # Terraform to run infrastracture
-├── scripts/                    
-│   ├── setup_azure_devops.md                  # Readme.md describe steps with installing Agent on VM
+│   ├── main.tf                                
 ├── pipelines/                  
-│   ├── azure_piplines_run_on_VM_Agent.yaml    # Pipeline run when all the enviroment is ready on VM 
-│   └── azure_pipelines_on_Azure_Agent.yaml    # Pipeline run on Azure Agent with basic checks
+│   ├── azure_piplines_run_on_VM_Agent.yaml
+│   └── azure_pipelines_on_Azure_Agent.yaml
 ├── code/                       
-│   ├── deploy.sh                               # Code runnig main.py on the VM
-│   ├── log.txt                                 # Example of logs to process
+│   ├── deploy.sh                              
+│   ├── log.txt                               
 │   ├── main.py
 │   ├── test_main.py
 ├── .gitignore  
