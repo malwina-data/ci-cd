@@ -74,12 +74,12 @@ ci-cd-2/
 ├── scripts/                    
 │   ├── setup_azure_devops.md                  # Readme.md describe steps with installing Agent on VM
 ├── pipelines/                  
-│   └── azure_piplines_run_on_VM_Agent.yaml    # Pipeline run when all the enviroment is ready on VM 
+│   ├── azure_piplines_run_on_VM_Agent.yaml    # Pipeline run when all the enviroment is ready on VM 
+│   └── azure_pipelines_on_Azure_Agent.yaml    # Pipeline run on Azure Agent with basic checks
 ├── code/                       
 │   ├── deploy.sh                               # Code runnig main.py on the VM
 │   ├── log.txt                                 # Example of logs to process
 │   ├── main.py
 │   ├── test_main.py
-└── .gitignore  
-└── azure_pipelines_on_Azure_Agent.yaml         # Pipeline run on Azure Agent with basic checks
+├── .gitignore  
 └── README.md                  
