@@ -11,19 +11,20 @@
 
 
 ## Structure in order :
-
-├── terraform/                  
-│   ├── main.tf                                
-├── pipelines/                  
-│   ├── azure_piplines_run_on_VM_Agent.yaml
+ci-cd-2/
+├── terraform/
+│   ├── main.tf
+├── pipelines/
+│   ├── azure_pipelines_run_on_VM_Agent.yaml
 │   └── azure_pipelines_on_Azure_Agent.yaml
-├── code/                       
-│   ├── deploy.sh                              
-│   ├── log.txt                               
+├── code/
+│   ├── deploy.sh
+│   ├── log.txt
 │   ├── main.py
 │   ├── test_main.py
-├── .gitignore  
-└── README.md                  
+├── .gitignore
+└── README.md
+                
 
 ### 1. Configure AWS Credentials
 
