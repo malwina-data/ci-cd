@@ -2,6 +2,7 @@
 
 This script is designed to search a log file for a specific error pattern and extract the `.eml` file name found in the context preceding the error. It uses regular expressions to locate the error pattern and retrieve the relevant email name.
 
+
 ## Requirements
 
 - Python 3.x
@@ -65,11 +66,20 @@ The `test_file_not_found` function tests the behavior when the log file doesn't 
 pytest test_main.py
 ```
 
-## Example Test Log
+## Structure in order :
 
-```text
-email for user9@example.org, attachment 'update_report.pdf' ready.
-Email sent to user9@example.org with subject 'Latest Updates'.
-Got index name (user9_update.eml).
-java.lang.NoSuchMethodError: 'boolean org.bouncycastle.asn1.ASN1TaggedObjectParser.hasTag(int, int)'
-```
+ci-cd-2/
+├── terraform/                  
+│   ├── main.tf                                 # Terraform to run infrastracture
+├── scripts/                    
+│   ├── setup_azure_devops.md                  # Readme.md describe steps with installing Agent on VM
+├── pipelines/                  
+│   └── azure_piplines_run_on_VM_Agent.yaml    # Pipeline run when all the enviroment is ready on VM 
+├── code/                       
+│   ├── deploy.sh                               # Code runnig main.py on the VM
+│   ├── log.txt                                 # Example of logs to process
+│   ├── main.py
+│   ├── test_main.py
+└── .gitignore  
+└── azure_pipelines_on_Azure_Agent.yaml         # Pipeline run on Azure Agent with basic checks
+└── README.md                  
