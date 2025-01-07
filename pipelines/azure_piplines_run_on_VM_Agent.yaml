@@ -37,7 +37,7 @@ steps:
       python3 -m venv /home/ubuntu/app/myenv
       ls /home/ubuntu/app/
       source /home/ubuntu/app/myenv/bin/activate
-      pip install flask pytest wheel gunicorn
+      pip install flask pytest wheel
     displayName: Pip install
 
   - script: |
