@@ -55,13 +55,6 @@ steps:
     displayName: 'Copy files from GIT to the VM'
 
   - script: |
-      sudo mv /home/ubuntu/app/code.service /etc/systemd/system/
-      sudo systemctl start code.service
-      sudo systemctl daemon-reload
-      sudo systemctl restart code.service
-    displayName: Run code.service
-
-  - script: |
       BACKUP_DIR="/home/ubuntu/backup_$(date +%Y%m%d)"
       
       if [ ! -d "$BACKUP_DIR" ]; then
@@ -78,8 +71,10 @@ steps:
       sshEndpoint: 'AWS-EC2-Production'
       runOptions: 'commands'
       commands: |
-        chmod +x /home/ubuntu/app/deploy.sh 
-        /home/ubuntu/app/deploy.sh
+        sudo mv /home/ubuntu/app/code.service /etc/systemd/system/
+        sudo systemctl start code.service
+        sudo systemctl daemon-reload
+        sudo systemctl restart code.service
     displayName: 'Uruchomienie aplikacji na serwerze'
 
   - script: |
