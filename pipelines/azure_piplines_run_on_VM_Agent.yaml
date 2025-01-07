@@ -35,7 +35,6 @@ steps:
       sudo apt install -y python3-venv python3-pip
       sudo apt install -y nginx
       python3 -m venv /home/ubuntu/app/myenv
-      ls /home/ubuntu/app/
       source /home/ubuntu/app/myenv/bin/activate
       pip install flask pytest wheel gunicorn
     displayName: Pip install
@@ -45,15 +44,17 @@ steps:
       pytest --junitxml=results.xml
     displayName: Check pytest version
 
+  - script: |
+      sudo mv /home/ubuntu/app/code.service /etc/systemd/system/
+      sudo systemctl start code.service
+      sudo systemctl daemon-reload
+      sudo systemctl restart code.service
+    displayName: Start code.service
+
   - task: PublishTestResults@2
     inputs:
       testResultsFiles: '**/results.xml'
       testResultsFormat: 'JUnit'
-  
-  - script: |
-      echo "Listing files"
-      ls $(System.DefaultWorkingDirectory)
-    displayName: 'List files in working directory'
 
   - task: CopyFilesOverSSH@0
     inputs:
@@ -74,8 +75,6 @@ steps:
           echo "$BACKUP_DIR już istnieje, pomijam tworzenie."
       fi
     displayName: 'Create backup of current application'
-
-
 
   - task: SSH@0
     inputs:
