@@ -72,8 +72,8 @@ steps:
       runOptions: 'commands'
       commands: |
         sudo mv /home/ubuntu/app/code.service /etc/systemd/system/
-        sudo systemctl start code.service
         sudo systemctl daemon-reload
+        sudo systemctl start code.service
         sudo systemctl restart code.service
     displayName: 'Uruchomienie aplikacji na serwerze'
 
