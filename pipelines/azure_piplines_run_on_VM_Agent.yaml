@@ -33,11 +33,11 @@ steps:
   - script: |
       sudo apt update
       sudo apt install -y python3-venv python3-pip
-      sudo apt install nginx
+      sudo apt install -y nginx
       python3 -m venv /home/ubuntu/app/myenv
       ls /home/ubuntu/app/
       source /home/ubuntu/app/myenv/bin/activate
-      pip install flask pytest wheel
+      pip install flask pytest wheel gunicorn
     displayName: Pip install
 
   - script: |
