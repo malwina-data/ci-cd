@@ -8,7 +8,7 @@ terraform.exe
 .terraform.lock.hcl
 terraform.tfstate
 terraform.tfstate.backup
-
+.terraform.tfvars
 # Ignoruj katalogi __pycache__
 __pycache__/
 
