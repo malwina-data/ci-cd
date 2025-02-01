@@ -4,7 +4,7 @@ from botocore.exceptions import ClientError
 import base64
 
 parsed_dict={}
-tfvars_file_path = '/Users/malwinka/ci-cd_5/ci-cd-2/terraform/terraform.tfvars'
+tfvars_file_path = './terraform/terraform.tfvars'
 with open(tfvars_file_path, 'r') as file:
     tfvars_content = file.read()
     for line in tfvars_content.strip().splitlines():
