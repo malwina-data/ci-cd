@@ -1,9 +1,14 @@
 import re
 import logging
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify
+from secrets_data import parsed_dict, connection_string
+
+print(parsed_dict['db_username'])
+print(connection_string)
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
 
 ERROR_PATTERN = r"boolean org\.bouncycastle\.asn1\.ASN1TaggedObjectParser\.hasTag\(int, int\)"
 EML_PATTERN = r"Got index name \((.*?)\.eml\)"
@@ -48,7 +53,7 @@ def find_context_before_pattern(
     except Exception as e:
         raise RuntimeError(f"An unexpected error occurred: {str(e)}")
 
-@app.route('/find_email', methods=['GET'])
+@app.route('/', methods=['GET'])
 def find_email():
     try:
         failed_email = find_context_before_pattern(LOG_FILE_PATH)

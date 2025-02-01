@@ -20,6 +20,7 @@ steps:
 
 - script: |
     pip install pytest pytest-azurepipelines
+    pip install psycopg2-binary
     pip install flask
     pytest
   displayName: 'pytest'

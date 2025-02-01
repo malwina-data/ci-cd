@@ -1,5 +1,7 @@
 variable "db_username" {}
 variable "db_password" {}
+variable "secret_1" {}
+variable "secret_2" {}
 
 provider "aws" {
   region = "sa-east-1"
@@ -79,17 +81,7 @@ resource "aws_security_group" "main" {
     Name = "security_group"
   }
 }
-resource "aws_instance" "main" {
-  ami           = "ami-015f3596bb2ef1aaa"  # ubuntu distribution
-  instance_type = "t3.micro"
-  subnet_id     = aws_subnet.main_1.id
-  associate_public_ip_address = true
-  security_groups = [aws_security_group.main.id]
-  key_name      = "key-pair"
-  tags = {
-    Name = "Instance"
-  }
-}
+
 output "subnet_id_1" {
   value = aws_subnet.main_1.id
 }
@@ -107,7 +99,7 @@ resource "aws_db_subnet_group" "db_subnet_group"{
   }
 }
 resource "aws_secretsmanager_secret" "db_secret" {
-  name        = "db-secret-02"
+  name        = var.secret_1
 }
 
 resource "aws_secretsmanager_secret_version" "db_secret_credentials" {
@@ -132,8 +124,25 @@ resource "aws_secretsmanager_secret_version" "db_secret_credentials" {
     password             = jsondecode(aws_secretsmanager_secret_version.db_secret_credentials.secret_string)["password"]
     port                 = 5432
   }
+resource "aws_secretsmanager_secret" "db_connection_secret" {
+  name        = var.secret_2
+}
+resource "aws_secretsmanager_secret_version" "db_secret_string" {
+  secret_id     = aws_secretsmanager_secret.db_connection_secret.id
+  secret_string = jsonencode({
+    connection_string = "postgresql://${var.db_username}:${var.db_password}@${aws_db_instance.db_postgres.endpoint}:${aws_db_instance.db_postgres.port}/${aws_db_instance.db_postgres.db_name}"
+  })
+  }
+/*
+resource "null_resource" "app_start" {
+  provisioner "local-exec" {
+    command = <<EOT
+      export DB_CONNECTION_STRING=$(aws ssm get-parameter --name "/myapp/db_connection_string" --query "Parameter.Value" --output text)
+    EOT
+  }
+}*/
 resource "aws_iam_role" "db_iam_role" {
-  name = "rds-db-iam-role"
+  name = "db-iam-role"
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
@@ -141,7 +150,7 @@ resource "aws_iam_role" "db_iam_role" {
         Action = "sts:AssumeRole",
         Effect = "Allow",
         Principal = {
-          Service = "rds.amazonaws.com"
+          Service = ["rds.amazonaws.com", "ec2.amazonaws.com"]
         }
       }
     ]
@@ -159,25 +168,48 @@ resource "aws_iam_policy" "policy" {
       "Action": "rds-db:connect",
       "Effect": "Allow",
       "Resource": "*"
+      },
+      {
+      "Effect": "Allow",
+      "Action": "secretsmanager:GetSecretValue",
+      "Resource": "*"
+      },
+      {
+      "Effect": "Allow",
+      "Action": "secretsmanager:ListSecrets",
+      "Resource": "*"
       }
     ]
   }
   EOT
 } 
-
-resource "aws_ssm_parameter" "db_connection_string" {
-  name  = "/myapp/db_connection_string"
-  type  = "SecureString"
-  value = "postgresql://${jsondecode(aws_secretsmanager_secret_version.db_secret_credentials.secret_string)["username"]}:${jsondecode(aws_secretsmanager_secret_version.db_secret_credentials.secret_string)["password"]}@${aws_db_instance.db_postgres.endpoint}:${aws_db_instance.db_postgres.port}/${aws_db_instance.db_postgres.db_name}"
+resource "aws_iam_role_policy_attachment" "policy_attachment" {
+  role       = aws_iam_role.db_iam_role.name
+  policy_arn = aws_iam_policy.policy.arn
 }
-resource "null_resource" "app_start" {
-  provisioner "local-exec" {
-    command = <<EOT
-      export DB_CONNECTION_STRING=$(aws ssm get-parameter --name "/myapp/db_connection_string" --query "Parameter.Value" --output text)
-    EOT
+resource "aws_iam_instance_profile" "db_instance_profile" {
+  name = "db-instance-profile"
+  role = aws_iam_role.db_iam_role.name
+}
+resource "aws_instance" "main" {
+  ami           = "ami-015f3596bb2ef1aaa"  # ubuntu distribution
+  instance_type = "t3.micro"
+  subnet_id     = aws_subnet.main_1.id
+  associate_public_ip_address = true
+  security_groups = [aws_security_group.main.id]
+  iam_instance_profile = aws_iam_instance_profile.db_instance_profile.name
+  key_name      = "key-pair"
+  tags = {
+    Name = "Instance"
   }
 }
 
+output "secret01" {
+  value = aws_secretsmanager_secret.db_secret.id
+}
+output "secret_string" {
+  value = aws_secretsmanager_secret.db_connection_secret.id
+}
 
 output "db_endpoint" {
   value = aws_db_instance.db_postgres.endpoint

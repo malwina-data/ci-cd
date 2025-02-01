@@ -22,6 +22,13 @@ steps:
     displayName: Install Python 3.10
 
   - script: |
+      sudo apt install unzip
+      curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+      unzip awscliv2.zip
+      sudo ./aws/install
+    displayName: Install AWS CLI
+
+  - script: |
       python3.10 --version
     displayName: Check Python Version
 
@@ -32,7 +39,7 @@ steps:
       sudo apt install -y nginx
       python3 -m venv /home/ubuntu/app/myenv
       source /home/ubuntu/app/myenv/bin/activate
-      pip install flask pytest wheel gunicorn
+      pip install flask pytest wheel gunicorn boto3 psycopg2-binary
     displayName: Python & PIP install
 
   - script: |
