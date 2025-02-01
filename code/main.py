@@ -1,10 +1,22 @@
 import re
 import logging
 from flask import Flask, jsonify
-from secrets_data import parsed_dict, connection_string
+import boto3
+import json
 
-print(parsed_dict['db_username'])
-print(connection_string)
+"""Database access"""
+client = boto3.client('secretsmanager', region_name='sa-east-1')
+response_secret_login = client.get_secret_value(SecretId="db-secret-05")
+secret_login = response_secret_login['SecretString']
+secret_login_json = json.loads(secret_login)
+dbname = secret_login_json['dbname']
+password = secret_login_json['password']
+username = secret_login_json['username']
+
+response_string_secret = client.get_secret_value(SecretId="db_connection_secret_03")
+secret_string_con = response_string_secret['SecretString']
+secret_data_con = json.loads(secret_string_con)
+connection_string = secret_data_con['connection_string']
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
