@@ -20,6 +20,9 @@ steps:
       sudo apt update
       sudo apt install -y python3.10 python3.10-venv python3.10-dev
     displayName: Install Python 3.10
+  - script: |
+      aws/install --update
+    displayName: Install AWS CLI 1
 
   - script: |
       sudo apt install unzip
