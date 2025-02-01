@@ -90,7 +90,7 @@ steps:
   - script: |
       echo "Sprawdzanie dostępności aplikacji..."
       PUBLIC_IP=$(curl -s ifconfig.me)
-      curl -f http://$PUBLIC_IP:5000/find_email || exit 1
+      curl -f http://$PUBLIC_IP:5000 || exit 1
     displayName: 'Accesing the web app'
 
   - script: |
