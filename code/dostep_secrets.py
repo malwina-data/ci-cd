@@ -1,6 +1,7 @@
 import boto3
 import json
 import psycopg2
+import datetime
 
 def get_db_credentials():
     client = boto3.client('secretsmanager', region_name='sa-east-1')
@@ -37,14 +38,36 @@ def get_db_credentials():
         """)
         conn.commit()
 
-        cursor.execute("SELECT * FROM data_raw")
+        cursor.execute("""
+        CREATE TABLE data_proceed (
+        id SERIAL PRIMARY KEY,
+        raw_id INTEGER REFERENCES data_raw(id),
+        processed_content TEXT,
+        processed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP); 
+        """)
+        # Wstawianie danych
+        content = "./log_1"
+        created_at = datetime.now()
+        cursor.execute(
+        "INSERT INTO data_raw (content, created_at) VALUES (%s, %s)",
+        (content, created_at))
 
-        rows = cursor.fetchall()
-        for row in rows:
-            print(row)
+        content = "./log_2"
+        created_at = datetime.now()
+        cursor.execute(
+        "INSERT INTO data_raw (content, created_at) VALUES (%s, %s)",
+        (content, created_at))
+
+        content = "./log_3"
+        created_at = datetime.now()
+        cursor.execute(
+        "INSERT INTO data_raw (content, created_at) VALUES (%s, %s)",
+        (content, created_at))
+
+        conn.commit()
         cursor.close()
         conn.close()
-        
+
     except Exception as e:
         print(f"Nie udało się połączyć z bazą danych: {e}")
 if __name__ == "__main__":

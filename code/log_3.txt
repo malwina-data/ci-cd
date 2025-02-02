@@ -1,0 +1,29 @@
+Starting data processing for user1@company.com using Java application.
+Successfully processed email for user1@company.com, generating 'invoice.eml' template.
+Sending email to user1@company.com with subject 'Invoice for November' (invoice_01.eml).
+Java process: Preparing user2@domain.org data for email.
+Successfully generated email for user2@domain.org (report_2024.eml).
+Sending email to user2@domain.org with subject 'Annual Report' (annual_report_2024.eml).
+Starting data processing for user3@company.net.
+Successfully processed email for user3@company.net, template 'newsletter.eml' ready.
+Sending email to user3@company.net with subject 'Winter Newsletter' (winter_newsletter_2024.eml).
+Preparing user4@site.com data for email, 'welcome.eml'.
+Successfully generated 'welcome_message.eml' for user4@site.com.
+Sending email to user4@site.com with subject 'Welcome to Our Service' (welcome_service_2024.eml).
+Java process: Starting email preparation for user5@organization.com.
+Email for user5@organization.com successfully processed, template 'verification.eml' ready.
+Sending email to user5@organization.com with subject 'Account Verification' (account_verification_2024.eml).
+Processing data for user6@domain.com.
+Successfully generated email for user6@domain.com, 'promotion.eml'.
+Sending email to user6@domain.com with subject 'Special Offer Just for You' (special_offer_2024.eml).
+Preparing email for user7@company.net using 'event_reminder.eml'.
+Email for user7@company.net generated successfully, sending now (event_reminder_2024.eml).
+Java process: Email sent to user7@company.net with subject 'Event Reminder' (event_reminder_sent_2024.eml).
+Sending email to user8@domain.org with 'survey.eml' template.
+Email for user8@domain.org successfully generated, sending Got index name (customer_survey_2024.eml).
+Email sent to user8@domain.org with subject 'Your Feedback Matters' Got index name (feedback_request_2024.eml).
+Preparing email for user9@company.net, 'update_notification.eml' template.
+Successfully processed email for user9@company.net, attachment 'update_report.pdf' ready.
+Email sent to user9@company.net with subject 'Latest Updates' Got index name (user9_update_2024.eml).
+java.lang.NoSuchMethodError: boolean org.bouncycastle.asn1.ASN1TaggedObjectParser.hasTag(int, int)
+Data processing completed. The issue has been traced back to the email for user10@unverified-domain.com. Java process failed to process the email content correctly due to a missing method.
