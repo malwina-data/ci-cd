@@ -100,18 +100,6 @@ resource "aws_db_subnet_group" "db_subnet_group"{
     name = "DB Subnet Group"
   }
 }
-resource "aws_secretsmanager_secret" "db_secret" {
-  name        = var.secret_1
-}
-
-resource "aws_secretsmanager_secret_version" "db_secret_credentials" {
-  secret_id     = aws_secretsmanager_secret.db_secret.id  # Odwołanie do ID sekretu
-  secret_string = jsonencode({
-    dbname   = "db_postgres"  # Nazwa bazy danych
-    username = var.db_username
-    password = var.db_password
-  })
-}
   resource "aws_db_instance" "db_postgres" {
     allocated_storage    = 10
     db_name              = "db_postgres"
@@ -127,7 +115,7 @@ resource "aws_secretsmanager_secret_version" "db_secret_credentials" {
     port                 = 5432
   }
 resource "aws_secretsmanager_secret" "db_connection_secret" {
-  name        = var.secret_2
+  name        = var.secret_1
 }
 resource "aws_secretsmanager_secret_version" "db_secret_string" {
   secret_id     = aws_secretsmanager_secret.db_connection_secret.id

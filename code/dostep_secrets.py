@@ -11,11 +11,10 @@ def get_db_credentials():
         secrets_list.append(secret.get('Name'))
 
     # secrets with endpoint 
-    response = client.get_secret_value(SecretId=secrets_list[1])
+    response = client.get_secret_value(SecretId=secrets_list[0])
     secret = response['SecretString']
     secret_dict = json.loads(secret)
-    #endpoint = secret_dict.get('connection_string')
-    endpoint= "postgresql://db_admin:admin_password@terraform-20250202092136305400000004.cneu60kskjor.sa-east-1.rds.amazonaws.com:5432/db_postgres"
+    endpoint = secret_dict.get('connection_string')
 
 
     try:
