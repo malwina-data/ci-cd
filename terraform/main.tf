@@ -132,7 +132,7 @@ resource "aws_secretsmanager_secret" "db_connection_secret" {
 resource "aws_secretsmanager_secret_version" "db_secret_string" {
   secret_id     = aws_secretsmanager_secret.db_connection_secret.id
   secret_string = jsonencode({
-    connection_string = "postgresql://${var.db_username}:${var.db_password}@${aws_db_instance.db_postgres.endpoint}:${aws_db_instance.db_postgres.port}/${aws_db_instance.db_postgres.db_name}"
+    connection_string = "postgresql://${var.db_username}:${var.db_password}@${aws_db_instance.db_postgres.endpoint}/${aws_db_instance.db_postgres.db_name}"
   })
   }
 /*
