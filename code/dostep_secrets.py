@@ -22,29 +22,7 @@ def get_db_credentials():
         conn = psycopg2.connect(endpoint)
         print("Połączono z bazą danych")
         cursor = conn.cursor()
-    
-        cursor.execute("""
-        CREATE TABLE data_raw (
-        id SERIAL PRIMARY KEY,
-        content TEXT NOT NULL,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
-        """)
-        cursor.execute("""
-        CREATE TABLE data_proceed (
-        id SERIAL PRIMARY KEY,
-        raw_id INTEGER REFERENCES data_raw(id),
-        processed_content TEXT,
-        processed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP); 
-        """)
-        conn.commit()
 
-        cursor.execute("""
-        CREATE TABLE data_proceed (
-        id SERIAL PRIMARY KEY,
-        raw_id INTEGER REFERENCES data_raw(id),
-        processed_content TEXT,
-        processed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP); 
-        """)
         # Wstawianie danych
         content = "./log_1"
         created_at = datetime.now()
