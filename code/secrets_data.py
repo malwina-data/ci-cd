@@ -11,7 +11,7 @@ def get_secret(secret_name, region_name="your-region"):
     return secret
 
 def send_to_postgresql():
-    secret_name = "your-secret-name"
+    secret_name = "secret05"
     secret = get_secret(secret_name)
 
     # Połączenie z bazą danych

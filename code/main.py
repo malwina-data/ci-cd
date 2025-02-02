@@ -1,45 +1,67 @@
-import boto3
-import json
-import psycopg2
-from psycopg2 import OperationalError
+import re
+import logging
+from flask import Flask, jsonify
 
-# Tworzymy klienta do AWS Secrets Manager
-client = boto3.client('secretsmanager', region_name='sa-east-1')
 
-# Pobieramy dane logowania z AWS Secrets Manager
-response_secret_login = client.get_secret_value(SecretId="db-secret-05")
-secret_login = response_secret_login['SecretString']
-secret_login_json = json.loads(secret_login)
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
-# Zmienna przechowująca dane logowania
-dbname = secret_login_json['dbname']
-password = secret_login_json['password']
-username = secret_login_json['username']
 
-# Pobieramy ciąg połączenia (connection string) z Secrets Manager
-response_string_secret = client.get_secret_value(SecretId="db_connection_secret_03")
-secret_string_con = response_string_secret['SecretString']
-secret_data_con = json.loads(secret_string_con)
+ERROR_PATTERN = r"boolean org\.bouncycastle\.asn1\.ASN1TaggedObjectParser\.hasTag\(int, int\)"
+EML_PATTERN = r"Got index name \((.*?)\.eml\)"
+pattern = ERROR_PATTERN
+LOG_FILE_PATH = r"log.txt"
+context_length: int = 200
 
-# Zmienna przechowująca connection string (używamy go do połączenia)
-connection_string = secret_data_con['connection_string']
 
-# Jeśli potrzebujesz, użyj 'connection_string' do połączenia, lub osobnych danych (dbname, username, password)
-# Tworzymy klienta RDS (jeśli chcesz używać IAM DB Authentication)
-rds_client = boto3.client('rds', region_name='sa-east-1')
+app = Flask(__name__)
 
-# Generowanie tokenu IAM
-hostname = "terraform-20250201120928639400000004.cneu60kskjor.sa-east-1.rds.amazonaws.com"
-port = 5432
-token = rds_client.generate_db_auth_token(DBHostname=hostname, Port=port, DBUsername=username)
+def find_context_before_pattern(
+        full_path: str, pattern: str = ERROR_PATTERN, context_length: int = 200
+) -> [str]:
+    """
+    Szuka określonego wzorca błędu w pliku logu i wyodrębnia nazwę pliku `.eml`,
+    który znajduje się w kontekście przed błędem.
 
-# Łączenie z bazą danych przy użyciu tokenu IAM (tu możesz użyć tokenu z Secrets Managera)
-try:
-    # Używamy psycopg2 do połączenia z PostgreSQL
-    connection = psycopg2.connect(host=hostname,port=port,user=username,password=token,dbname=dbname,sslmode='require')
-    print("Połączono z bazą danych!")
-except OperationalError as e:
-    print(f"Nie udało się połączyć z bazą danych: {e}")
-finally:
-    if connection:
-        connection.close()
+    Args:
+        full_path (str): Ścieżka do pliku logu.
+        pattern (str): Wzorzec regex do wyszukiwania błędu.
+        context_length (int): Liczba znaków do wyodrębnienia przed dopasowanym wzorcem.
+
+    Returns:
+        Optional[str]: Nazwa pliku `.eml`, lub None, jeśli wzorzec lub plik `.eml` nie zostały znalezione.
+    """
+    try:
+        with open(full_path, "r", encoding="utf-8") as file:
+            log_text = file.read()
+        logger.info(f"Log in text is open")
+        matches = list(re.finditer(pattern, log_text, re.DOTALL))
+        logger.info(f"Error is localized in mail")
+        last_match = matches[-1]
+        start_index = max(0, last_match.start() - context_length)
+        context = log_text[start_index:last_match.start()]
+        logger.info(f"Context of error is find ")
+        eml_match = re.search(EML_PATTERN, context)
+        logger.info(f"Email is found")
+        return eml_match.group(1)
+
+    except FileNotFoundError:
+        raise FileNotFoundError(f"Log file '{full_path}' does not exist.")
+    except Exception as e:
+        raise RuntimeError(f"An unexpected error occurred: {str(e)}")
+
+@app.route('/', methods=['GET'])
+def find_email():
+    try:
+        failed_email = find_context_before_pattern(LOG_FILE_PATH)
+        if failed_email:
+            return jsonify({"email": f"{failed_email}.eml"})
+        else:
+            return jsonify({"error": "No error pattern or `.eml` file name found in the logs."}), 404
+    except Exception as error:
+        return jsonify({"error": str(error)}), 500
+
+
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=5000, debug=True)
