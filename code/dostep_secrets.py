@@ -1,7 +1,7 @@
 import boto3
 import json
 import psycopg2
-import datetime
+from datetime import datetime
 
 def get_db_credentials():
     client = boto3.client('secretsmanager', region_name='sa-east-1')
