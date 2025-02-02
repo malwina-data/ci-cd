@@ -36,11 +36,10 @@ def get_db_credentials():
         'port': 5432
     }
     try:
-        connection = psycopg2.connect(**connection_params)
-        cursor = connection.cursor()
+        conn = psycopg2.connect(endpoint)
         print("Połączono z bazą danych")
-    except Exception as error:
-        print(f"Nie udało się połączyć z bazą danych: {error}")
+    except Exception as e:
+        print(f"Nie udało się połączyć z bazą danych: {e}")
     """
     cursor.execute("SELECT * FROM data_raw;")
     """
