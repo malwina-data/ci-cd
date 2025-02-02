@@ -1,4 +1,5 @@
 import boto3
+import json
 
 def get_db_credentials():
     client = boto3.client('secretsmanager', region_name='sa-east-1')
