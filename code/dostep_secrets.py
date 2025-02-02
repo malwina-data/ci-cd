@@ -24,7 +24,8 @@ def get_db_credentials():
         cursor = conn.cursor()
 
         # Wstawianie danych
-        content = "./log_1"
+        with open("./log_1", 'r') as file:
+            content = file.read()
         created_at = datetime.now()
         cursor.execute(
         "INSERT INTO data_raw (content, created_at) VALUES (%s, %s)",
