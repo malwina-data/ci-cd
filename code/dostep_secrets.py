@@ -31,13 +31,15 @@ def get_db_credentials():
         "INSERT INTO data_raw (content, created_at) VALUES (%s, %s)",
         (content, created_at))
 
-        content = "./log_2"
+        with open("./log_2.txt", 'r') as file:
+            content = file.read()
         created_at = datetime.now()
         cursor.execute(
         "INSERT INTO data_raw (content, created_at) VALUES (%s, %s)",
         (content, created_at))
 
-        content = "./log_3"
+        with open("./log_3.txt", 'r') as file:
+            content = file.read()
         created_at = datetime.now()
         cursor.execute(
         "INSERT INTO data_raw (content, created_at) VALUES (%s, %s)",
