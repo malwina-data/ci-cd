@@ -30,6 +30,7 @@ steps:
       unzip awscliv2.zip
       sudo rm -rf /usr/local/aws-cli
       sudo ./aws/install
+      sudo chmod 600 ~/.aws/credentials
     displayName: 'Reinstall AWS CLI'
 
 
