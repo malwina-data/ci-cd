@@ -46,7 +46,7 @@ steps:
       sudo apt install -y nginx
       python3 -m venv /home/ubuntu/app/myenv
       source /home/ubuntu/app/myenv/bin/activate
-      pip install flask pytest wheel gunicorn boto3 psycopg2
+      pip install flask pytest wheel gunicorn boto3 psycopg2-binary
     displayName: Python & PIP install
 
   - script: |

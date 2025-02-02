@@ -43,6 +43,9 @@ def get_db_credentials():
         print("Połączono z bazą danych")
     except Exception as error:
         print(f"Nie udało się połączyć z bazą danych: {error}")
+    """
+    cursor.execute("SELECT * FROM data_raw;")
+    """
 
     """
     CREATE TABLE data_raw (
