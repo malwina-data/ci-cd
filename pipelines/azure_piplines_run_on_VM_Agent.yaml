@@ -26,8 +26,8 @@ steps:
       sudo apt install -y unzip
       curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
       unzip awscliv2.zip
-      sudo rm -rf /usr/local/aws-cli  # Usuwa starą instalację
-      sudo ./aws/install  # Zainstaluje AWS CLI na nowo
+      sudo rm -rf /usr/local/aws-cli
+      sudo ./aws/install
     displayName: 'Reinstall AWS CLI'
 
 
@@ -38,11 +38,12 @@ steps:
   - script: |
       sudo apt update
       sudo apt install -y python3.10 python3.10-venv python3.10-dev
+      sudo apt install -y libpq-dev
       sudo apt install -y python3-venv python3-pip
       sudo apt install -y nginx
       python3 -m venv /home/ubuntu/app/myenv
       source /home/ubuntu/app/myenv/bin/activate
-      pip install flask pytest wheel gunicorn boto3 psycopg2-binary
+      pip install flask pytest wheel gunicorn boto3 psycopg2
     displayName: Python & PIP install
 
   - script: |

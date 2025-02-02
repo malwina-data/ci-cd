@@ -1,18 +1,41 @@
 import boto3
 import json
-import base64
+import psycopg2
 
+def get_secret(secret_name, region_name="your-region"):
+    client = boto3.client('secretsmanager', region_name='sa-east-1')
 
-client = boto3.client('secretsmanager', region_name='sa-east-1')
-response_secret_login = client.get_secret_value(SecretId="db-secret-05")
-secret_login = response_secret_login['SecretString']
-secret_login_json = json.loads(secret_login)
-dbname = secret_login_json['dbname']
-password = secret_login_json['password']
-username = secret_login_json['username']
+    response = client.get_secret_value(SecretId=secret_name)
+    secret = json.loads(response['SecretString'])
+    
+    return secret
 
-response_string_secret = client.get_secret_value(SecretId="db_connection_secret_03")
-secret_string_con = response_string_secret['SecretString']
-secret_data_con = json.loads(secret_string_con)
-connection_string = secret_data_con['connection_string']
+def send_to_postgresql():
+    secret_name = "your-secret-name"
+    secret = get_secret(secret_name)
+
+    # Połączenie z bazą danych
+    conn = psycopg2.connect(
+        dbname=secret["dbname"],
+        user=secret["user"],
+        password=secret["password"],
+        host=secret["host"],
+        port=secret["port"]
+    )
+
+    cursor = conn.cursor()
+
+    # Przykładowa operacja INSERT
+    query = "INSERT INTO users (name, email) VALUES (%s, %s);"
+    data = ("Jan Kowalski", "jan@example.com")
+
+    cursor.execute(query, data)
+    conn.commit()
+
+    cursor.close()
+    conn.close()
+
+    print("Dane wysłane do PostgreSQL!")
+
+send_to_postgresql()
 

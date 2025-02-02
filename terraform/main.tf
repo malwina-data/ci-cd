@@ -2,7 +2,9 @@ variable "db_username" {}
 variable "db_password" {}
 variable "secret_1" {}
 variable "secret_2" {}
-
+variable "AWS_DEFAULT_REGION" {}
+variable "AWS_ACCESS_KEY_ID" {}
+variable "AWS_SECRET_ACCESS_KEY" {}
 provider "aws" {
   region = "sa-east-1"
 }
@@ -178,6 +180,11 @@ resource "aws_iam_policy" "policy" {
       "Effect": "Allow",
       "Action": "secretsmanager:ListSecrets",
       "Resource": "*"
+      },
+      {
+      "Effect": "Allow",
+      "Action": "ec2:DescribeInstances",
+      "Resource": "*"
       }
     ]
   }
@@ -199,6 +206,22 @@ resource "aws_instance" "main" {
   security_groups = [aws_security_group.main.id]
   iam_instance_profile = aws_iam_instance_profile.db_instance_profile.name
   key_name      = "key-pair"
+
+  user_data = <<-EOF
+    #!/bin/bash
+    mkdir -p /home/ubuntu/.aws
+
+    echo "[default]" > /home/ubuntu/.aws/config
+    echo "region = ${var.AWS_DEFAULT_REGION}" >> /home/ubuntu/.aws/config
+    echo "output = json" >> /home/ubuntu/.aws/config
+
+    echo "[default]" > /home/ubuntu/.aws/credentials
+    echo "aws_access_key_id = ${var.AWS_ACCESS_KEY_ID}" >> /home/ubuntu/.aws/credentials
+    echo "aws_secret_access_key = ${var.AWS_SECRET_ACCESS_KEY}" >> /home/ubuntu/.aws/credentials
+
+  EOF
+
+
   tags = {
     Name = "Instance"
   }
