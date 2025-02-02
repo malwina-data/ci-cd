@@ -41,25 +41,22 @@ def get_db_credentials():
         print("Połączono z bazą danych")
     except Exception as e:
         print(f"Nie udało się połączyć z bazą danych: {e}")
-    """
-    cursor.execute("SELECT * FROM data_raw;")
-    """
-
-    """
+    
+    cursor.execute("""
     CREATE TABLE data_raw (
     id SERIAL PRIMARY KEY,
     content TEXT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
-    """
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);""")
 
-    """
+
+    cursor.execute("""
     CREATE TABLE data_proceed (
     id SERIAL PRIMARY KEY,
     raw_id INTEGER REFERENCES data_raw(id),
     processed_content TEXT,
-    processed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
-    """
+    processed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);""")
 
+    cursor.execute("SELECT * FROM data_proceed")
     
 if __name__ == "__main__":
     get_db_credentials()
