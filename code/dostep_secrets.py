@@ -12,8 +12,8 @@ def get_db_credentials():
     response = client.get_secret_value(SecretId=secrets_list[0])
     secret = response['SecretString']
     secret_dict = json.loads(secret)
-    username = secret_dict.get('db_username')
-    password = secret_dict.get('db_password')
+    username = secret_dict.get('username')
+    password = secret_dict.get('password')
 
     # secrets with endpoint 
     response = client.get_secret_value(SecretId=secrets_list[1])
