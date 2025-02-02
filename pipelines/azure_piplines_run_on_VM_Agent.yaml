@@ -49,8 +49,8 @@ steps:
       python3 -m venv /home/ubuntu/app/myenv
       source /home/ubuntu/app/myenv/bin/activate
       pip install flask pytest wheel gunicorn boto3 psycopg2 psycopg2-binary
+      pip show psycopg2
       sudo apt-get update
-      sudo python -m pip install psycopg2-binary
     displayName: Python & PIP install
 
   - script: |
