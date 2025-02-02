@@ -20,31 +20,32 @@ def get_db_credentials():
     try:
         conn = psycopg2.connect(endpoint)
         print("Połączono z bazą danych")
+        cursor = conn.cursor()
+    
+        cursor.execute("""
+        CREATE TABLE data_raw (
+        id SERIAL PRIMARY KEY,
+        content TEXT NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
+        """)
+        cursor.execute("""
+        CREATE TABLE data_proceed (
+        id SERIAL PRIMARY KEY,
+        raw_id INTEGER REFERENCES data_raw(id),
+        processed_content TEXT,
+        processed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP); 
+        """)
+        conn.commit()
+
+        cursor.execute("SELECT * FROM data_raw")
+
+        rows = cursor.fetchall()
+        for row in rows:
+            print(row)
+        cursor.close()
+        conn.close()
+        
     except Exception as e:
         print(f"Nie udało się połączyć z bazą danych: {e}")
-    cursor = conn.cursor()
-    cursor.execute("""
-    CREATE TABLE data_raw (
-    id SERIAL PRIMARY KEY,
-    content TEXT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);""")
-    cursor.execute("""
-    CREATE TABLE data_proceed (
-    id SERIAL PRIMARY KEY,
-    raw_id INTEGER REFERENCES data_raw(id),
-    processed_content TEXT,
-    processed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);""")
-    conn.commit()
-
-    # Zamknięcie kursora i połączenia
-    cursor.execute("SELECT * FROM data_raw")
-
-        # Pobieranie wszystkich wierszy
-    rows = cursor.fetchall()
-    for row in rows:
-        print(row)
-    cursor.close()
-    conn.close()
-    
 if __name__ == "__main__":
     get_db_credentials()
