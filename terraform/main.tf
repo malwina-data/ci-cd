@@ -1,7 +1,6 @@
 variable "db_username" {}
 variable "db_password" {}
 variable "secret_1" {}
-variable "secret_2" {}
 variable "AWS_DEFAULT_REGION" {}
 variable "AWS_ACCESS_KEY_ID" {}
 variable "AWS_SECRET_ACCESS_KEY" {}
@@ -100,6 +99,7 @@ resource "aws_db_subnet_group" "db_subnet_group"{
     name = "DB Subnet Group"
   }
 }
+
   resource "aws_db_instance" "db_postgres" {
     allocated_storage    = 10
     db_name              = "db_postgres"
@@ -110,8 +110,8 @@ resource "aws_db_subnet_group" "db_subnet_group"{
     iam_database_authentication_enabled = true
     db_subnet_group_name = aws_db_subnet_group.db_subnet_group.name
     vpc_security_group_ids = [aws_security_group.main.id]
-    username             = jsondecode(aws_secretsmanager_secret_version.db_secret_credentials.secret_string)["username"]
-    password             = jsondecode(aws_secretsmanager_secret_version.db_secret_credentials.secret_string)["password"]
+    username             = var.db_username
+    password             = var.db_password
     port                 = 5432
   }
 resource "aws_secretsmanager_secret" "db_connection_secret" {
@@ -216,7 +216,7 @@ resource "aws_instance" "main" {
 }
 
 output "secret01" {
-  value = aws_secretsmanager_secret.db_secret.id
+  value = aws_secretsmanager_secret_version.db_secret_string.id
 }
 output "secret_string" {
   value = aws_secretsmanager_secret.db_connection_secret.id
