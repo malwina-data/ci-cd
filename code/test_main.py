@@ -1,5 +1,6 @@
 import pytest
 import os
+import flask
 from main import find_context_before_pattern
 
 def test_write_test_log():

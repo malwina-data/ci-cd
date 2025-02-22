@@ -55,7 +55,8 @@ steps:
       pip install flask
       pip install wheel 
       pip install gunicorn 
-      pip install boto3 
+      pip install boto3
+      pip install pytest
       pip install psycopg2-binary
     displayName: PIP install
 
@@ -70,7 +71,7 @@ steps:
   - script: |
       sudo apt-get update
       source /home/ubuntu/app/myenv/bin/activate
-      pytest --junitxml=results.xml
+      pytest --junitxml=results.xml --cache-clear
     displayName: Run pytest_1
 
 
