@@ -46,6 +46,7 @@ steps:
       sudo apt-get install -y python3-venv python3-pip
       sudo apt-get install -y nginx
       sudo apt-get install build-dep python-psycopg2
+      sudo apt install python3-pytest -y
       python3 -m venv /home/ubuntu/app/myenv
       source /home/ubuntu/app/myenv/bin/activate
       pip install flask pytest wheel gunicorn boto3 psycopg2 psycopg2-binary
