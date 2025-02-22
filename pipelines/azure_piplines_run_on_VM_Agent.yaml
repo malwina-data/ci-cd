@@ -71,7 +71,7 @@ steps:
       sudo apt-get update
       source /home/ubuntu/app/myenv/bin/activate
       pytest --junitxml=results.xml
-    displayName: Run pytest
+    displayName: Run pytest_1
 
 
   - task: PublishTestResults@2
