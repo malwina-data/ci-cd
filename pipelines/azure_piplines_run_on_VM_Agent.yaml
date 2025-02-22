@@ -20,7 +20,7 @@ steps:
       sudo apt update
       sudo apt install -y python3.10 python3.10-venv python3.10-dev
       sudo apt update
-      sudo apt install postgresql-client
+      sudo apt install postgresql-client -y
     displayName: Install Python 3.10
 
   - script: |
