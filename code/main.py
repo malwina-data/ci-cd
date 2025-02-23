@@ -59,6 +59,7 @@ def find_email():
         else:
             return jsonify({"error": "No error pattern or `.eml` file name found in the logs."}), 404
     except Exception as error:
+        logger.error(f"Error in find_email route: {str(error)}")
         return jsonify({"error": str(error)}), 500
 
 
