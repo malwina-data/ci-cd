@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 ERROR_PATTERN = r"boolean org\.bouncycastle\.asn1\.ASN1TaggedObjectParser\.hasTag\(int, int\)"
 EML_PATTERN = r"Got index name \((.*?)\.eml\)"
 pattern = ERROR_PATTERN
-LOG_FILE_PATH = r"log.txt"
+LOG_FILE_PATH = r"log_1.txt"
 context_length: int = 200
 
 
