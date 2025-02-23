@@ -120,7 +120,3 @@ steps:
       fi
     displayName: 'Restore backup if deployment fails'
     condition: failed()
-
-
-
-
