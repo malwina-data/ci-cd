@@ -4,6 +4,7 @@ variable "secret_1" {}
 variable "AWS_DEFAULT_REGION" {}
 variable "AWS_ACCESS_KEY_ID" {}
 variable "AWS_SECRET_ACCESS_KEY" {}
+variable "path_for_logs"{}
 provider "aws" {
   region = "sa-east-1"
 }
@@ -186,6 +187,11 @@ resource "aws_iam_instance_profile" "db_instance_profile" {
   name = "db-instance-profile"
   role = aws_iam_role.db_iam_role.name
 }
+resource "aws_s3_bucket" "log_files_bucket" {
+  bucket = "my-unique-log-bucket-20250223-192639z"
+  acl = "private"
+}
+
 resource "aws_instance" "main" {
   ami           = "ami-015f3596bb2ef1aaa"  # ubuntu distribution
   instance_type = "t3.micro"
@@ -209,11 +215,35 @@ resource "aws_instance" "main" {
 
   EOF
 
+  provisioner "local-exec" {
+    command = <<EOT
+      aws s3 cp ${var.path_for_logs}/log_1.txt s3://${aws_s3_bucket.log_files_bucket.bucket}/log_1.txt
+      aws s3 cp ${var.path_for_logs}/log_2.txt s3://${aws_s3_bucket.log_files_bucket.bucket}/log_2.txt
+      aws s3 cp ${var.path_for_logs}/log_3.txt s3://${aws_s3_bucket.log_files_bucket.bucket}/log_3.txt
+    EOT
+  }
 
   tags = {
     Name = "Instance"
   }
 }
+/*
+resource "null_resource" "create_logs_table" {
+  provisioner "local-exec" {
+    command = <<EOT
+      CONNECTION_STRING=$(aws secretsmanager get-secret-value --secret-id ${aws_secretsmanager_secret_version.db_secret_string.id} --query SecretString --output text | jq -r '.connection_string')
+
+      psql --dbname="$CONNECTION_STRING" -c "
+      CREATE TABLE IF NOT EXISTS logs (
+          id SERIAL PRIMARY KEY,
+          log_text TEXT
+      );"
+    EOT
+  }
+  depends_on = [aws_db_instance.db_postgres, aws_secretsmanager_secret_version.db_secret_string]
+}
+*/
+
 
 output "secret01" {
   value = aws_secretsmanager_secret_version.db_secret_string.id
